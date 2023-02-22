@@ -2,47 +2,46 @@
   <div class="upper">
        <div class="app-title">
             <div class="text">
-               <h1>To Do List</h1>
+               <h1>Checklist</h1>
                <p>With a State Management</p>
             </div>
             <div class="buttons">
-                 <button id="btn" class="opt-btn"><span class="material-symbols-outlined icon">settings</span></button>
-                 <button id="btn" class="opt-btn"><span class="material-symbols-outlined icon">delete_forever</span></button>
-                 <button id="btn" class="opt-btn"><span class="material-symbols-outlined icon">check_box</span></button>
+                 <button id="btn" class="opt-btn" (click)="clearAll()" *ngIf="id==='completed'"><span class="material-symbols-outlined icon">delete_forever</span> Clear All</button>
+                 <button id="btn" class="opt-btn" (click)="markAll()" *ngIf="id==='active'"><span class="material-symbols-outlined icon">check_box</span> Mark All</button>
             </div>
        </div>
-       <form class="form">
+       <form class="form" [formGroup]="checklistForm" (ngSubmit)="addToDo()">
             <div class="form-details">
-                 <input type="text" id="add-input" name="toDoInput" class="input" placeholder="Add something to do" required noSpaceValidation>
-                 <button id="btn" type="submit" class="btn"><span class="material-symbols-outlined icon">add</span></button>
+                 <input type="text" id="add-input" formControlName="item" class="input" placeholder="Add something to do">
+                 <button id="btn" type="submit" class="btn"><span class="material-symbols-outlined icon">add</span> Add</button>
             </div>
        </form>
        <ul class="tab-link">
-            <li id="btn">Pending</li>
-            <li id="btn">Completed</li>
+            <li id="btn" (click)="tabChange('active')" [ngClass]="{'active': id === 'active'}">Pending</li>
+            <li id="btn" (click)="tabChange('completed')" [ngClass]="{'active': id === 'completed'}">Completed</li>
        </ul>
   </div>
   <div class="lower">
-       <div class="contentVal">
+       <div class="contentVal" *ngIf="id === 'active'">
             <ul class="toDoList activeToDo">
-                 <li class="toDo">
+                 <li class="toDo" *ngFor="let toDo of pending; let i = index" id="item{{i}}" (click)="handleCheckBox($event, i)">
                       <div class="content">
-                           <p>Item</p>
-                           <p class="created">20/02/2022</p>
+                           <p>{{toDo.item}}</p>
+                           <p class="created">{{toDo.dateCreated}}</p>
                       </div>
-                      <label class="container"><input type="checkbox" name="toDoCheck"><span class="checkbox" id="checkbox"></span></label>
-                      <span id="icon" class="material-symbols-outlined icon">edit</span>
+                      <label class="container"><input type="checkbox" name="toDoCheck" [checked]="toDo.checked"><span class="checkbox" id="checkbox"></span></label>
+                      <span id="icon" class="material-symbols-outlined icon" (click)="editToDo(i)">edit</span>
                  </li>
             </ul>
        </div>
-       <div class="contentVal">
+       <div class="contentVal" *ngIf="id === 'completed'">
             <ul class="toDoList completedToDo">
-                 <li class="toDo">
+                 <li class="toDo" *ngFor="let toDo of completed; index as i" id="item{{i}}">
                       <div class="content">
-                           <p>Item</p>
-                           <p class="created">20/02/2022</p>
-                      </div>
-                      <span id="icon" class="material-symbols-outlined icon">delete</span>
+                         <p>{{toDo.item}}</p>
+                         <p class="created">{{toDo.dateCreated}}</p>
+                    </div>
+                    <span id="icon" class="material-symbols-outlined icon" (click)="deleteToDo(i)">delete</span>
                  </li>
             </ul>
        </div>
