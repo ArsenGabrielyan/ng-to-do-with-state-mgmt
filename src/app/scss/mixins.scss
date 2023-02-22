@@ -1,0 +1,9 @@
+@mixin flex-align($j: flex-start,$a: flex-start){justify-content: $j;align-items: $a;}
+@mixin button($c,$rad){
+     display: flex;@include flex-align(center, center);
+     border: 2px solid $c;padding: 0.5em;border-radius: $rad;font-size: 1.2rem;
+     color: $c;cursor: pointer;transition: .3s ease all;font-weight: 500;
+     &:hover:not(:disabled){background-color: $c;color: white;}&:disabled{border-color: grey; color: grey;cursor: auto;}
+}
+@mixin size($w,$h){width:$w;height: $h;}
+@mixin makeBox($c,$hc){color: $c;cursor: pointer;transition: .3s ease all;&:hover{color: $hc;}}

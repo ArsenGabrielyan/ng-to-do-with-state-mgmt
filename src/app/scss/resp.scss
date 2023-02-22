@@ -1,0 +1,12 @@
+@import "./mixins.scss";
+@media screen and (max-width: 600px) {
+     .to-do-container{
+          .upper{
+               width: 90% !important;@include flex-align(center, center);text-align: center;
+               .app-title{@include flex-align(center, center);flex-direction: column;width: 100%!important;.buttons{flex-direction: column; width: inherit; @include flex-align(center, center);.opt-btn{margin-top: 10px; width: inherit;}}}
+               .form .form-details{@include flex-align(center, center);flex-direction: column;.input, .btn{width: 100% !important;}.btn{margin-top: 15px;}}
+               .tab-link{width: 100%;@include flex-align(center, center);flex-direction:column;li{width: inherit;margin: 5px;}}
+          } 
+          .lower{width: 90% !important; .contentVal .toDoList .toDo .container{padding-left: 32px;}}
+     }
+}

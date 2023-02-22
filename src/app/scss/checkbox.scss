@@ -1,0 +1,16 @@
+$green: #22b455;$size: 24px;
+@import "./mixins.scss";
+.container{
+     display: block;position: relative;padding-left: 24px;margin-bottom: 24px;
+     cursor: pointer;font-size: 22px;user-select: none;
+     input{position: absolute;opacity: 0;cursor: pointer; @include size(0,0); transition: .2s ease all;&:checked ~ .checkbox{background-color: $green;border-color: $green;&::after{display: block;}}}
+     .checkbox{
+          position: absolute;top: 0;left: 0;border: 2px solid #888;border-radius: 5px;
+          cursor: pointer;transition: .2s ease all;@include size($size,$size);
+          &:hover{border: 2px solid rgba($color: #888, $alpha: 0.5);}
+          &::after{
+               content: "";position: absolute;display: none;left: 6px;top: 2px;width: 5px;height: 10px;
+               border: solid white;border-width: 0 3px 3px 0;transform: rotate(45deg);
+          }
+     }
+}
