@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxsModule } from '@ngxs/store';
 
 import { AppComponent } from './app.component';
+import { ChecklistState } from './store/checklist-item.state';
 
 @NgModule({
   declarations: [
@@ -10,7 +12,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxsModule.forRoot([ChecklistState])
   ],
   providers: [],
   bootstrap: [AppComponent]
