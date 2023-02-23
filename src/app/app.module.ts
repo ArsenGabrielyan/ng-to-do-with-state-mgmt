@@ -5,10 +5,12 @@ import { NgxsModule } from '@ngxs/store';
 
 import { AppComponent } from './app.component';
 import { ChecklistState } from './store/checklist-item.state';
+import { ValidationMessagePipe } from './pipe/validation-message.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ValidationMessagePipe
   ],
   imports: [
     BrowserModule,

@@ -20,10 +20,10 @@ export class ChecklistState{
      @Action(ChecklistActions.AddItem) 
      addToDo(ctx: StateContext<ChecklistModel>, action: ChecklistActions.AddItem){
           const state = ctx.getState();
+          state.pending.push(action.item);
           ctx.setState({
                ...state, 
-               pending: [...state.pending, action.item]
+               pending: [...state.pending]
           })
-          console.log(state)
      }
 }

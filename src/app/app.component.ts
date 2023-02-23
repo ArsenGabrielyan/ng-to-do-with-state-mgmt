@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { Store } from '@ngxs/store';
-import { Subject, timer, map, takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Select, Store } from '@ngxs/store';
+import { Subject, timer, map, takeUntil, Observable } from 'rxjs';
+import { ChecklistValidator } from './classes/checklist-validator';
 import { IChecklistItem } from './interfaces/checklist-item';
 import { ChecklistActions } from './store/checklist-item.actions';
+import { ChecklistState } from './store/checklist-item.state';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +14,15 @@ import { ChecklistActions } from './store/checklist-item.actions';
 })
 export class AppComponent implements OnInit, OnDestroy{
   id: string = localStorage.getItem("tab") || "pending";
-  pending: IChecklistItem[] = JSON.parse(localStorage.getItem("pending")!) || [];
-  completed: IChecklistItem[] = JSON.parse(localStorage.getItem("completed")!) || [];
+  pending: IChecklistItem[] = [];
+  completed: IChecklistItem[] = [];
+  @Select(ChecklistState) checklist$!: Observable<IChecklistItem[]>
   checklistForm!: FormGroup;
   destr = new Subject<void>();
   constructor(private store: Store, private fbuilder: FormBuilder){}
   ngOnInit(): void {
     this.checklistForm = this.fbuilder.group({
-      item: ["", [Validators.required]]
+      item: ["", [Validators.required, ChecklistValidator.hasSpaces]]
     })
   }
   ngOnDestroy(): void {
@@ -35,10 +38,8 @@ export class AppComponent implements OnInit, OnDestroy{
       checked: false,
       dateCreated: new Date(Date.now()).toUTCString()
     };
-    // this.pending.push(item);
-    // localStorage.setItem("pending", JSON.stringify(this.pending));
-    // this.checklistForm.reset({item: ""})
     this.store.dispatch(new ChecklistActions.AddItem(item))
+    this.checklist$.pipe(map((v:any)=>this.pending = v.pending)).subscribe();
   }
   handleCheckBox(e:any, i:number){
     // if(e.target.checked === undefined) return;
