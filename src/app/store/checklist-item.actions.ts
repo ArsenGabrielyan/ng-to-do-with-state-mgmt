@@ -17,9 +17,6 @@ export namespace ChecklistActions{
           static readonly type = "[Checklist] DeleteItem";
           constructor(public item: IChecklistItem){}
      }
-     export class FetchItem{
-          static readonly type = "[Checklist] FetchItem";
-     }     
      export class MarkItems{
           static readonly type = "[Checklist] MarkAllItems";
           constructor(public items: IChecklistItem[]){}

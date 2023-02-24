@@ -28,7 +28,6 @@ export class AppComponent implements OnInit, OnDestroy{
       this.completed = v.completed;
       this.pending = v.pending
     })).subscribe();
-    this.store.dispatch(new ChecklistActions.FetchItem())
   }
   ngOnDestroy(): void {
     this.destr.next();
