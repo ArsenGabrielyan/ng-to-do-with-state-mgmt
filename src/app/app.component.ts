@@ -14,8 +14,8 @@ import { ChecklistState } from './store/checklist-item.state';
 })
 export class AppComponent implements OnInit, OnDestroy{
   id: string = localStorage.getItem("tab") || "pending";
-  pending: IChecklistItem[] = [];
-  completed: IChecklistItem[] = [];
+  pending!: IChecklistItem[];
+  completed!: IChecklistItem[];
   @Select(ChecklistState.getData) checklist$!: Observable<IChecklistItem[]>
   checklistForm!: FormGroup;
   destr = new Subject<void>();
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
   tabChange(t:string){
     this.id = t;
-    localStorage.setItem("tab", this.id)
+    localStorage.setItem("tab", this.id);
   }
   addToDo(){
     let item: IChecklistItem = {
