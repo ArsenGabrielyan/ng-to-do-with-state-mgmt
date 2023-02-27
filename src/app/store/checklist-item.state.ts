@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Action, State, StateContext } from "@ngxs/store";
+import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { IChecklistItem } from "../interfaces/checklist-item";
 import { ChecklistActions } from "./checklist-item.actions";
 
@@ -17,6 +17,10 @@ export interface ChecklistModel{
 })
 @Injectable()
 export class ChecklistState{
+     @Selector<ChecklistModel>()
+     static getData(data: ChecklistState){
+          return data;
+     }
      @Action(ChecklistActions.AddItem) 
      addToDo(ctx: StateContext<ChecklistModel>, action: ChecklistActions.AddItem){
           const state = ctx.getState();

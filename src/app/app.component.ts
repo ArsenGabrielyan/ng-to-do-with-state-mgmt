@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy{
   id: string = localStorage.getItem("tab") || "pending";
   pending: IChecklistItem[] = [];
   completed: IChecklistItem[] = [];
-  @Select(ChecklistState) checklist$!: Observable<IChecklistItem[]>
+  @Select(ChecklistState.getData) checklist$!: Observable<IChecklistItem[]>
   checklistForm!: FormGroup;
   destr = new Subject<void>();
   constructor(private store: Store,private rend: Renderer2, private fbuilder: FormBuilder){}
@@ -24,10 +24,7 @@ export class AppComponent implements OnInit, OnDestroy{
     this.checklistForm = this.fbuilder.group({
       item: ["", [Validators.required, ChecklistValidator.hasSpaces]]
     })
-    this.checklist$.pipe(map((v:any)=>{
-      this.completed = v.completed;
-      this.pending = v.pending
-    })).subscribe();
+    this.updateData();
   }
   ngOnDestroy(): void {
     this.destr.next();
@@ -42,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy{
       checked: false,
       dateCreated: new Date(Date.now()).toUTCString()
     };
-    this.store.dispatch(new ChecklistActions.AddItem(item))
+    this.store.dispatch(new ChecklistActions.AddItem(item));
     this.checklistForm.reset({item: ""})
   }
   handleCheckBox(e:any, i:number){
@@ -63,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
   deleteToDo(i:number){
     const sure = confirm("Are you sure to delete this task (item)?");
-    if(sure) this.store.dispatch(new ChecklistActions.DeleteItem(this.completed[i]))
+    if(sure) this.store.dispatch(new ChecklistActions.DeleteItem(this.completed[i]));
   }
   markAll(){
     if(!this.pending.length) {
@@ -85,5 +82,11 @@ export class AppComponent implements OnInit, OnDestroy{
       return;
     }
     this.store.dispatch(new ChecklistActions.ClearItems(this.completed))
+  }
+  updateData(){
+    this.checklist$.pipe(map((v:any)=>{
+      this.completed = v.completed;
+      this.pending = v.pending;
+    })).subscribe();
   }
 }
